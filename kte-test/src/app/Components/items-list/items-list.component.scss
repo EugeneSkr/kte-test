@@ -1,0 +1,20 @@
+.options{
+    display:flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.options__new-item-button{
+    height:50px;
+}
+
+.items{
+    margin-top:40px;
+    display:flex;
+    flex-wrap: wrap;
+    gap:20px;
+}
+
+.items__card{
+    width: 350px;
+}

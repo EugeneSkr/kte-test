@@ -1,0 +1,30 @@
+<!-- опции -->
+<div class="options">
+    <button mat-raised-button color="primary" class="options__new-item-button">Добавить товар</button>
+    <mat-form-field>
+        <input matInput type="search" placeholder="Поиск" class="options__search-input" [(ngModel)]="searchInput" (ngModelChange)='searchInputChanged.next($event)'>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Выберите категорию:</mat-label>
+        <mat-select class="options__categories" [(value)]="params.category">
+            <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+</div>
+<!-- товары -->
+<div class="items">
+    <mat-card *ngFor="let item of items" class="items__card">
+        <mat-card-header>
+            
+          <mat-card-title-group>
+            <mat-card-title>{{ item.title }}</mat-card-title>
+            <mat-card-subtitle>{{ item.brand }}</mat-card-subtitle>
+            <mat-card-subtitle>{{ item.category }}</mat-card-subtitle>
+            <img mat-card-sm-image [src]="item.thumbnail" />
+          </mat-card-title-group>
+        </mat-card-header>
+        <mat-card-content>
+          {{ item.description }}
+        </mat-card-content>
+      </mat-card>
+</div>
