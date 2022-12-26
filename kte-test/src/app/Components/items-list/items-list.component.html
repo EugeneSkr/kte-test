@@ -1,29 +1,47 @@
 <!-- опции -->
 <div class="options">
-    <button mat-raised-button color="primary" class="options__new-item-button">Добавить товар</button>
+    <a type="button" href="/new" mat-raised-button color="primary" class="options__new-item-button">Добавить товар</a>
+
     <mat-form-field>
         <input matInput type="search" placeholder="Поиск" class="options__search-input" [(ngModel)]="searchInput" (ngModelChange)='searchInputChanged.next($event)'>
     </mat-form-field>
+
     <mat-form-field>
         <mat-label>Выберите категорию:</mat-label>
-        <mat-select class="options__categories" [(value)]="params.category">
+        <mat-select class="options__categories" [(ngModel)]="params.category" (selectionChange)="getItemsList()">
             <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
         </mat-select>
       </mat-form-field>
+
+      <mat-paginator #paginator
+        class="options__demo-paginator"
+        (page)="changePage($event)"
+        [length]="params.total"
+        [pageSize]="params.limit"
+        [disabled]="false"
+        [showFirstLastButtons]="false"
+        [pageSizeOptions]="pageSize"
+        [hidePageSize]="false"
+        [pageIndex]="params.page"
+        aria-label="Select page">
+      </mat-paginator>
+
+    <img *ngIf="loadingService.isLoading$  | async" class="options__loader" src="/assets/spinner.gif"  />
 </div>
 <!-- товары -->
 <div class="items">
-    <mat-card *ngFor="let item of items" class="items__card">
+    <mat-card *ngFor="let item of items" class="items__card" (click)="showDetails(item.id)">
         <mat-card-header>
-            
           <mat-card-title-group>
-            <mat-card-title>{{ item.title }}</mat-card-title>
-            <mat-card-subtitle>{{ item.brand }}</mat-card-subtitle>
-            <mat-card-subtitle>{{ item.category }}</mat-card-subtitle>
+            <mat-card-title appHighlight [searchInput]="searchInput" [content]="item.title" >{{ item.title }}</mat-card-title>
+            <mat-card-title>{{ item.price | currency:'USD' }}</mat-card-title>
+            <mat-card-title *ngIf="item.rating"><mat-icon class="items__card__star">star</mat-icon> {{ item.rating }}</mat-card-title>
+            <mat-card-subtitle appHighlight [searchInput]="searchInput" [content]="item.brand">{{ item.brand }}</mat-card-subtitle>
+            <mat-card-subtitle *ngIf="item.discountPercentage">discount: {{ item.discountPercentage }}%</mat-card-subtitle>
             <img mat-card-sm-image [src]="item.thumbnail" />
           </mat-card-title-group>
         </mat-card-header>
-        <mat-card-content>
+        <mat-card-content appHighlight [searchInput]="searchInput" [content]="item.description">
           {{ item.description }}
         </mat-card-content>
       </mat-card>

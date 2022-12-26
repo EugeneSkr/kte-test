@@ -1,0 +1,20 @@
+.item-view__card__images{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.item-view__card_gray{
+    color: #777;
+    font-weight:normal;
+    font-size:14px;
+
+}
+
+.item-view__card__images{
+    margin:20px;
+}
+
+.item-view__card__images_thumb{
+    height: 150px;
+}

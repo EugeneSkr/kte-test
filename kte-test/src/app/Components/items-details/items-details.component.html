@@ -1,1 +1,27 @@
-<p>items-details works!</p>
+<div class="item-view">
+    <mat-card *ngIf="item" class="item-view__card">
+        <mat-card-header>
+          <mat-card-title-group>
+            <mat-card-title><span class="item-view__card_gray">id:</span> {{ item.id }}</mat-card-title>
+            <mat-card-title><span class="item-view__card_gray">Наименование:</span> {{ item.title }}</mat-card-title>
+            <mat-card-title><span class="item-view__card_gray">цена:</span> {{ item.price | currency:'USD' }}</mat-card-title>
+            <mat-card-title><span class="item-view__card_gray">брэнд:</span> {{ item.brand }}</mat-card-title>
+            <mat-card-title><span class="item-view__card_gray">рейтинг:</span> {{ item.rating }}</mat-card-title>
+            <mat-card-title><span class="item-view__card_gray">скидка:</span> {{ item.discountPercentage }}%</mat-card-title>
+            <img mat-card-sm-image [src]="item.thumbnail" />
+          </mat-card-title-group>
+        </mat-card-header>
+        
+        <mat-card-content>
+            <span class="item-view__card_gray">Описание:</span>
+            {{ item.description }}
+        </mat-card-content>
+        <div class="item-view__card__images">
+            <div *ngFor="let image of item.images">
+                <a [href]="image" target="_blank">
+                    <img class="item-view__card__images_thumb" [src]="image" />
+                </a>
+            </div>
+        </div>
+      </mat-card>
+</div>

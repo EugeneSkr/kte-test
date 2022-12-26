@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ItemsService } from 'src/app/Services/items.service';
 import { IItem, IPageParams } from 'src/app/Models/item';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
+import { LoadingService } from 'src/app/Services/loading.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-items-list',
@@ -10,23 +14,41 @@ import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 })
 export class ItemsListComponent implements OnInit {
 
-  constructor(private itemsService: ItemsService) {}
+  constructor(private itemsService: ItemsService, public loadingService: LoadingService, private router:Router) {}
 
   params: IPageParams = {
-    page: 1,
+    page: 0,
     skip: 0,
-    limit: 40,
+    limit: 25,
     total: 0,
     totalPages: 1,
     category: 'all',
     search: ''
   }
 
+  pageSize: Array<number> = [25, 50, 100];
+
   searchInput:string = '';
   searchInputChanged:Subject<string> = new Subject<string>();
 
   categories: Array<string> = [];
   items: Array<IItem> = [];
+
+  //просмотр деталей товара
+  showDetails(id:number): void{
+    this.router.navigate(
+      ['/details', id]
+    );
+    
+  }
+
+  //пагинатор
+  changePage(e: PageEvent): void{
+    this.params.page = e.pageIndex;
+    this.params.limit = e.pageSize;
+    this.params.skip = this.params.page * this.params.limit;
+    this.getItemsList();
+  }
   
   //загрузка списка категорий
   getCategoriesList(): void{
@@ -39,11 +61,6 @@ export class ItemsListComponent implements OnInit {
     })
   }
 
-  //подсчёт значения для пропуска элементов
-  calcSkip(): void{
-    this.params.skip = (this.params.page - 1) * this.params.limit;
-  }
-
   //подсчёт количества страниц
   calcTotalPages(): void{
     this.params.totalPages = Math.ceil(this.params.total / this.params.limit);
@@ -51,20 +68,12 @@ export class ItemsListComponent implements OnInit {
 
   //загрузка списка товаров
   getItemsList(): void{
-    this.calcSkip();
     this.itemsService.getItemsList(this.params).subscribe({
       next: 
         (data:any) => {
           this.params.total = data.total;
           this.calcTotalPages();
           this.items = data.products;
-          
-          //this.items = data.items;
-          /*this.items = this.items.map((obj:any) => {
-            return {...obj, costs: this.helpersService.price(obj.costs) }
-          });
-          this.itemsPageParams.totalPages = data.totalPages;
-          this.itemsPageParams.totalCount = data.totalCount;*/
         }
     })
   }

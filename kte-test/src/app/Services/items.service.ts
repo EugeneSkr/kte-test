@@ -17,7 +17,7 @@ export class ItemsService {
       return this.http.get(this.constants.BACKEND + '/products/search', { params: new HttpParams().append('q', params.search) });
     }
     if(params.category !== 'all'){
-      return this.http.get(this.constants.BACKEND + '/products/category', { params: new HttpParams({fromObject: params as any}) });
+      return this.http.get(this.constants.BACKEND + '/products/category/' + params.category, { params: new HttpParams({fromObject: params as any}) });
     }
     return this.http.get(this.constants.BACKEND + '/products/', { params: new HttpParams({fromObject: params as any}) });
   }
@@ -25,6 +25,16 @@ export class ItemsService {
   //загрузка категорий
   public getCategoriesList():Observable<any>{
     return this.http.get(this.constants.BACKEND + '/products/categories');
+  }
+
+  //загрузка товара
+  public getItemInfo(itemId:number):Observable<any>{
+    return this.http.get(this.constants.BACKEND + '/products/' + itemId);
+  }
+
+  //новый товар
+  public saveItem(newItem:IItem){
+    return this.http.post(this.constants.BACKEND + '/products/add', newItem);
   }
   
 }

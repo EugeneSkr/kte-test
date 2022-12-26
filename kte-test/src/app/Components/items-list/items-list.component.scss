@@ -4,8 +4,8 @@
     flex-wrap: wrap;
 }
 
-.options__new-item-button{
-    height:50px;
+.options__new-item-button, .options__loader{
+    height:55px;
 }
 
 .items{
@@ -17,4 +17,10 @@
 
 .items__card{
     width: 350px;
+    cursor:pointer;
+}
+
+.items__card__star{
+    float:left;
+    margin:3px 0 0 0;
 }

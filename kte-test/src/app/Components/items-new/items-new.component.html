@@ -1,1 +1,65 @@
-<p>items-new works!</p>
+
+<mat-card class="new-item">
+    <p class="new-item__notice">{{ noticeMessage }}</p>
+
+    <form class="new-item__form" [formGroup]="reactiveForm" (ngSubmit)="saveItem()">
+    <p>Новый товар: </p>
+    <mat-form-field class="new-item__form__input">
+        <mat-label>Наименование:</mat-label>
+        <input type="text" matInput formControlName="title" />
+        <mat-error *ngIf="isControlInvalid('title')">
+            Укажите наименование
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field class="new-item__form__input">
+        <mat-label>Брэнд:</mat-label>
+        <input type="text" matInput formControlName="brand" />
+        <mat-error *ngIf="isControlInvalid('brand')">
+            Укажите брэнд
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field class="new-item__form__input">
+        <mat-label>Описание товара:</mat-label>
+        <input type="text" matInput formControlName="description" />
+        <mat-error *ngIf="isControlInvalid('description')">
+            Укажите описание
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field class="new-item__form__input">
+        <mat-label>Цена:</mat-label>
+        <input type="price" matInput formControlName="price" />
+        <mat-error *ngIf="isControlInvalid('price')">
+            Укажите цену
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field class="new-item__form__input">
+        <mat-label>Категория:</mat-label>
+        <mat-select class="options__categories" formControlName="category" >
+            <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="isControlInvalid('category')">
+            Укажите категорию
+        </mat-error>
+      </mat-form-field>
+
+    <mat-form-field class="new-item__form__input">
+        <mat-label>Рейтинг:</mat-label>
+        <input type="number"  name="title" matInput formControlName="rating" />
+        <mat-error *ngIf="isControlInvalid('rating')">
+            Укажите рейтинг со значением от 0 до 5
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field class="new-item__form__input">
+        <mat-label>Скидка:</mat-label>
+        <input type="number" min="0" max="50" matInput formControlName="discount" />
+      </mat-form-field>
+    <div class="new-item__form__buttons">
+        <button mat-raised-button (click)="cancel()">Отмена</button>
+        <button mat-raised-button [disabled]="!reactiveForm.valid" color="primary">Добавить</button>
+    </div>
+
+    </form>
+</mat-card>
+
+
+
